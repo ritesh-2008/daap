@@ -3,6 +3,7 @@ import Refund from "./component/refund.jsx";
 import Stats from "./component/stats.jsx";
 import Admin from "./component/admin.jsx";
 import  Buyticket from "./component/buyticket.jsx";
+import Navbar from "./component/navbar.jsx";
 import {getCurrentAccount,getOwnerAccount} from "./interface/web3.js"
 
 export default function App(){
@@ -26,6 +27,7 @@ export default function App(){
     <div className="home page">
       <h3 >BOOKIT</h3>
       <div className="home-content">
+        <Navbar />
         <Buyticket />
         <Stats/>
         <Refund/>

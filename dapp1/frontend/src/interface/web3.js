@@ -9,7 +9,7 @@ let EventContract;
 let userAccount;
 
 //  Ensure app is initialized
-export async function init() {
+export  async function init() {
   if (EventContract) return;
 
   if (!window.ethereum) {

@@ -1,34 +1,36 @@
-import {soldvipticket,
-    purchaseTicket,buyVipSeat,
-    refundTicket,
-    refundVipTicket,
-    checkticket,
-    checkvipticket,
-    soldticket
-} from "../scripts/interface/web3";
+import { useState ,useEffect} from "react";
+import Refund from "./component/refund.jsx";
+import Stats from "./component/stats.jsx";
+import Admin from "./component/admin.jsx";
+import  Buyticket from "./component/buyticket.jsx";
+import {getCurrentAccount,getOwnerAccount} from "./interface/web3.js"
 
-import { useState, useEffect } from "react";
-
-export default function App() {
-  const [normalSold, setNormalSold] = useState(0);
-  const [vipSold, setVipSold] = useState(0);
+export default function App(){
+  const [isowner,setowner] = useState("");
 
   useEffect(() => {
-    async function fetchSoldTickets() {
-      const normal = await soldticket();
-      const vip = await soldvipticket();
-      setNormalSold(normal);
-      setVipSold(vip);
-    }
-    fetchSoldTickets();
-  }, []);
+    async function checkowner(){
+      try{
+        const owner = await getOwnerAccount();
+        const useracc = getCurrentAccount()
 
-  return (
-    <div>
-      <h1>Event Ticketing DApp</h1>
-      <p>Normal Tickets Sold: {normalSold}</p>
-      <p>VIP Tickets Sold: {vipSold}</p>
-      {/* Additional UI components for purchasing, refunding, and checking tickets can be added here */}
+        setowner(owner.toLowerCase() === useracc.toLowerCase())
+      }catch(err){
+        console.error(err)
+      }
+    }
+    checkowner();
+  },[]);
+
+  return(
+    <div className="home page">
+      <h3 >BOOKIT</h3>
+      <div className="home-content">
+        <Buyticket />
+        <Stats/>
+        <Refund/>
+      {isowner && <Admin/>}
+      </div>
     </div>
-  );
-}   
+  )
+}

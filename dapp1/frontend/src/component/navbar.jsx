@@ -1,5 +1,7 @@
 import { useState } from "react";
-import init from "../interface/web3.js";
+import init, { EventContract, userAccount } from "../interface/web3.js";
+
+
 
 export default function Navbar(){
    const [errorMessage, setErrorMessage] = useState("");
@@ -9,6 +11,9 @@ export default function Navbar(){
     setLoading(true);
     try{
       await init();
+      console.log("Connected account:", userAccount);
+      console.log("Contract:", EventContract);
+
     }catch(err){
       setErrorMessage(err.message || "An error occurred while connecting the wallet.");
     }finally{

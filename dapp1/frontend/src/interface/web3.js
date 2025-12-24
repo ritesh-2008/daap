@@ -1,15 +1,15 @@
 import Web3 from "web3";
-import ContractABI from "./event.json";
+import abi from "./event.json";
 
 const CONTRACT_ADDRESS =
   "0xbE012904eE07ee7d7f48d57fc504E08A98E5Eafa";
 
-let web3;
-let EventContract;
-let userAccount;
+export let web3;
+export let EventContract;
+export let userAccount;
 
 //  Ensure app is initialized
-export  async function init() {
+export default async function init() {
   if (EventContract) return;
 
   if (!window.ethereum) {
@@ -34,7 +34,7 @@ export  async function init() {
   }
 
   EventContract = new web3.eth.Contract(
-    ContractABI,
+    abi,
     CONTRACT_ADDRESS
   );
 }

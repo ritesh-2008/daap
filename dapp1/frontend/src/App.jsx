@@ -4,6 +4,7 @@ import Stats from "./component/stats.jsx";
 import Admin from "./component/admin.jsx";
 import  Buyticket from "./component/buyticket.jsx";
 import Navbar from "./component/navbar.jsx";
+import CTA1 from "./component/footer.jsx";
 import {getCurrentAccount,getOwnerAccount} from "./interface/web3.js"
 
 export default function App(){
@@ -31,6 +32,7 @@ export default function App(){
         <Buyticket />
         <Stats/>
         <Refund/>
+        <CTA1 />
       {isowner && <Admin/>}
       </div>
     </div>

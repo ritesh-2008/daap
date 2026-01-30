@@ -1,5 +1,6 @@
 import Web3 from "web3";
 import abi from "./event.json";
+let initialized = false;
 
 const CONTRACT_ADDRESS =
   "0xbE012904eE07ee7d7f48d57fc504E08A98E5Eafa";
@@ -11,6 +12,8 @@ export let userAccount;
 //  Ensure app is initialized
 export default async function init() {
   if (EventContract) return;
+  if (initialized) return;
+  initialized = true;
 
   if (!window.ethereum) {
     throw new Error("MetaMask not detected");
@@ -28,10 +31,32 @@ export default async function init() {
   const chainId = await window.ethereum.request({
     method: "eth_chainId",
   });
+   const sepoliaChainId = '0xaa36a7'; 
+ 
+  console.log("Current chainId:", chainId);
+  console.log("Expected:", sepoliaChainId);
 
-  if (chainId !== "0xaa36a7") {
+  if (chainId.toLowerCase() !== sepoliaChainId.toLowerCase()) {
+    initialized = false;
     throw new Error("Please switch to Sepolia network");
   }
+ 
+   try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: sepoliaChainId }],
+      });
+      
+      // Reload after successful switch
+      window.location.reload();
+    } catch (switchError) {
+      throw new Error(`Wrong network. Please switch to Sepolia. Current: ${chainId}`);
+    }
+
+
+window.ethereum.on("chainChanged", () => {
+  window.location.reload();
+});
 
   EventContract = new web3.eth.Contract(
     abi,

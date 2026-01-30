@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import abi from "./event.json";
-let initialized = false;
+
 
 const CONTRACT_ADDRESS =
   "0xbE012904eE07ee7d7f48d57fc504E08A98E5Eafa";
@@ -12,8 +12,7 @@ export let userAccount;
 //  Ensure app is initialized
 export default async function init() {
   if (EventContract) return;
-  if (initialized) return;
-  initialized = true;
+  
 
   if (!window.ethereum) {
     throw new Error("MetaMask not detected");

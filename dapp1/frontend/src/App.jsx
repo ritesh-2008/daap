@@ -26,7 +26,7 @@ export default function App(){
 
   return(
     <div className="home page">
-      <h3 >BOOKIT</h3>
+      
       <div className="home-content">
         <Navbar />
         <Buyticket />

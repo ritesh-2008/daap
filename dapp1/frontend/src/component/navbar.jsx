@@ -1,39 +1,104 @@
 import { useState } from "react";
 import init, { EventContract, userAccount } from "../interface/web3.js";
+import {
+  Box,
+  Heading,
+  Button,
+  useToast,
+  Image
+} from "@chakra-ui/react";
 
 
+export default function Navbar() {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
-export default function Navbar(){
-   const [errorMessage, setErrorMessage] = useState("");
-   const [loading, setLoading] = useState(false);
- async function connectWallet(){
-    setErrorMessage("");
+  async function connectWallet() {
     setLoading(true);
-    try{
+
+    try {
       await init();
+
+      toast({
+        title: "Wallet connected",
+        description: userAccount,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+
       console.log("Connected account:", userAccount);
       console.log("Contract:", EventContract);
 
-    }catch(err){
-      setErrorMessage(err.message || "An error occurred while connecting the wallet.");
-    }finally{
+    } catch (err) {
+      toast({
+        title: "Connection failed",
+        description: err.message || "User rejected the request",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } finally {
       setLoading(false);
     }
   }
-  return (
-    <div className="w-full flex justify-between items-center px-8 py-4 bg-black/60 backdrop-blur border-b border-white/10">
-      <h1 className="text-xl font-bold">bookit</h1>
 
-      <div className="flex gap-3">
-        <button onClick={() => connectWallet()} className="px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-700 transition">
-          Connect Wallet
-        </button>
-        <button className="px-4 py-2 rounded-lg border border-white/20 hover:bg-white/10 transition">
-          Sign in
-        </button>
-        {loading && <p>Connecting...</p>}
-        {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-      </div>
-    </div>
+
+  return (
+    <Box position="sticky"
+      top="0"
+      zIndex="100"
+      px={10}
+      py={4}
+      bg="rgba(0, 0, 10, 0.75)"
+      backdropFilter="blur(14px)"
+      borderBottom="1px solid"
+      borderColor="whiteAlpha.200"
+      borderRadius="3xl"
+      padding={4}
+      margin={4}
+      boxShadow="0 4px 12px rgba(172, 9, 99, 0.7)"
+      display="flex"
+      alignItems="center"
+    >
+
+      {/* Logo */}
+      <Heading size="lg"
+        bgGradient="linear(to-r, green.400, teal.300)"
+        bgClip="text"
+        fontWeight="extrabold"
+        letterSpacing="wide"
+        paddingLeft={2}
+        paddingRight={2}
+      >Bookit</Heading>
+
+
+      <Button onClick={() => connectWallet()} isLoading={loading}
+        loadingText="Connecting"
+        bgGradient="linear(to-r, green.400, teal.400)"
+        color="black"
+        fontWeight="bold"
+        px={6}
+        rounded="full"
+        _hover={{
+          transform: "translateY(-1px)",
+          boxShadow: "0 0 20px rgba(72,187,120,0.6)",
+        }}
+        _active={{
+          transform: "scale(0.97)",
+        }}
+        left={1000}
+      >
+        Connect Wallet
+      </Button>
+
+      <Image src="/golden-ticket.png" alt="Logo" boxSize="40px" right={1000}  />
+
+
+
+    </Box>
   );
 }

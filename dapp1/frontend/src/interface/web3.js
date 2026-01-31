@@ -101,7 +101,7 @@ export async function refundVipTicket() {
   await init();
 
   return EventContract.methods
-    .refund()
+    .refundforvip()
     .send({ from: userAccount });
 }
 // checkticket

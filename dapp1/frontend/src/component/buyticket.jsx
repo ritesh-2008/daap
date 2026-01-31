@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { purchaseTicket, buyVipSeat } from "../interface/web3";
-
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
 export default function Buyticket() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -62,10 +62,10 @@ export default function Buyticket() {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
-      <h3>BUY TICKET</h3>
+    <Box p={6} bg="gray.900" color="white" borderRadius="xl" boxShadow="lg" maxW="400px" mx="auto">
+      <Heading as="h3" size="lg" mb={4}>BUY TICKET</Heading>
       
-      <div style={{ marginBottom: "15px" }}>
+      <Box marginBottom="15px">
         <input
           type="text"
           placeholder="Name"
@@ -92,10 +92,10 @@ export default function Buyticket() {
           disabled={loading}
           style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
         />
-      </div>
+      </Box>
 
-      <div style={{ display: "flex", gap: "10px", marginBottom: "15px" }}>
-        <button
+      <Box display="flex" gap="10px" marginBottom="15px">
+        <Button
           onClick={() => Buyticket(false)}
           disabled={loading}
           style={{
@@ -106,9 +106,9 @@ export default function Buyticket() {
           }}
         >
           {loading ? "Processing..." : "Buy Normal Ticket"}
-        </button>
+        </Button>
         
-        <button
+        <Button
           onClick={() => Buyticket(true)}
           disabled={loading}
           style={{
@@ -120,26 +120,26 @@ export default function Buyticket() {
           }}
         >
           {loading ? "Processing..." : "Buy VIP Ticket"}
-        </button>
-      </div>
+        </Button>
+      </Box>
 
       {loading && (
-        <p style={{ color: "blue", textAlign: "center" }}>
+        <Text color="blue" textAlign="center">
           Processing your purchase...
-        </p>
+        </Text>
       )}
       
       {success && (
-        <p style={{ color: "green", textAlign: "center" }}>
+        <Text color="green" textAlign="center">
           ✅ {success}
-        </p>
+        </Text>
       )}
       
       {errorMessage && (
-        <p style={{ color: "red", textAlign: "center" }}>
+        <Text color="red" textAlign="center"  >
           ❌ {errorMessage}
-        </p>
+        </Text>
       )}
-    </div>
+    </Box>
   );
 }

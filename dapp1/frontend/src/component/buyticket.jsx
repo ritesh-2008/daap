@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { purchaseTicket, buyVipSeat } from "../interface/web3";
-import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, Text, useToast } from "@chakra-ui/react";
 export default function Buyticket() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -8,18 +8,46 @@ export default function Buyticket() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const toast = useToast();
 
   const validateInputs = () => {
     if (!name.trim()) {
-      setErrorMessage("Please enter your name");
+      const msg = "Please enter your name";
+      setErrorMessage(msg);
+      toast({
+        title: "Validation error",
+        description: msg,
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
       return false;
     }
     if (!email.trim() || !email.includes("@")) {
-      setErrorMessage("Please enter a valid email");
+      const msg = "Please enter a valid email";
+      setErrorMessage(msg);
+      toast({
+        title: "Validation error",
+        description: msg,
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
       return false;
     }
     if (!phone.trim()) {
-      setErrorMessage("Please enter your phone number");
+      const msg = "Please enter your phone number";
+      setErrorMessage(msg);
+      toast({
+        title: "Validation error",
+        description: msg,
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
       return false;
     }
     return true;
@@ -42,11 +70,19 @@ export default function Buyticket() {
         await purchaseTicket(name, email, phone);
       }
       
-      setSuccess(
-        vip
-          ? "VIP Ticket purchased successfully!"
-          : "Normal Ticket purchased successfully!"
-      );
+      const successMsg = vip
+        ? "VIP Ticket purchased successfully!"
+        : "Normal Ticket purchased successfully!";
+
+      setSuccess(successMsg);
+      toast({
+        title: "Purchase successful",
+        description: successMsg,
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
       
       // Clear form after successful purchase
       setName("");
@@ -55,7 +91,16 @@ export default function Buyticket() {
       
     } catch (err) {
       console.error("Purchase error:", err);
-      setErrorMessage(err.message || "An error occurred during the purchase.");
+      const msg = err?.message || "An error occurred during the purchase.";
+      setErrorMessage(msg);
+      toast({
+        title: "Purchase failed",
+        description: msg,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
     } finally {
       setLoading(false);
     }
@@ -116,7 +161,7 @@ export default function Buyticket() {
             padding: "10px",
             cursor: loading ? "not-allowed" : "pointer",
             opacity: loading ? 0.6 : 1,
-            background: "#gold"
+            background: "gold"
           }}
         >
           {loading ? "Processing..." : "Buy VIP Ticket"}

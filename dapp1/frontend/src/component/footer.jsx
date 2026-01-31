@@ -1,37 +1,121 @@
+import { Box, Heading, Text, Stack, HStack, Button, Flex } from "@chakra-ui/react";
+
 export default function CTA2() {
   return (
-    <div className="relative w-full max-w-4xl overflow-hidden rounded-[40px] bg-orange-500 p-6 sm:p-10 md:p-20">
-      <div className="absolute inset-0 hidden h-full w-full overflow-hidden md:block">
-        <div className="absolute top-1/2 right-[-45%] aspect-square h-[800px] w-[800px] -translate-y-1/2">
-          <div className="absolute inset-0 rounded-full bg-orange-400 opacity-30"></div>
-          <div className="absolute inset-0 scale-[0.8] rounded-full bg-orange-300 opacity-30"></div>
-          <div className="absolute inset-0 scale-[0.6] rounded-full bg-orange-200 opacity-30"></div>
-          <div className="absolute inset-0 scale-[0.4] rounded-full bg-orange-100 opacity-30"></div>
-          <div className="absolute inset-0 scale-[0.2] rounded-full bg-orange-50 opacity-30"></div>
-          <div className="absolute inset-0 scale-[0.1] rounded-full bg-white/50 opacity-30"></div>
-        </div>
-      </div>
+    <Box
+      position="relative"
+      w="full"
+      maxW="4xl"
+      mx="auto"
+      overflow="hidden"
+      borderRadius="2xl"
+      bgGradient="linear(to-r, orange.500, orange.400)"
+      p={{ base: 6, sm: 8, md: 12 }}
+    >
+      {/* Decorative circles */}
+      <Box
+        position="absolute"
+        right="-10%"
+        top="50%"
+        transform="translateY(-50%)"
+        pointerEvents="none"
+      >
+        <Box
+          position="absolute"
+          right="0"
+          top="0"
+          w={{ base: "200px", md: "420px", lg: "520px" }}
+          h={{ base: "200px", md: "420px", lg: "520px" }}
+          borderRadius="full"
+          bg="rgba(255,255,255,0.06)"
+          filter="blur(40px)"
+        />
+        <Box
+          position="absolute"
+          right="30px"
+          top="40px"
+          w={{ base: "140px", md: "320px", lg: "380px" }}
+          h={{ base: "140px", md: "320px", lg: "380px" }}
+          borderRadius="full"
+          bg="rgba(255,255,255,0.04)"
+          filter="blur(24px)"
+        />
+      </Box>
 
-      <div className="relative z-10">
-        <h1 className="mb-3 text-3xl font-bold text-white sm:text-4xl md:mb-4 md:text-5xl">
+      {/* Content */}
+      <Flex direction="column" zIndex="1">
+        <Heading
+          as="h2"
+          color="white"
+          fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
+          mb={{ base: 3, md: 4 }}
+          fontWeight="bold"
+        >
           Let&apos;s Get In Touch.
-        </h1>
-        <p className="mb-6 max-w-md text-base text-white sm:text-lg md:mb-8">
-          Your laboratory instruments should serve you, not the other way
-          around. We&apos;re happy to help you.
-        </p>
+        </Heading>
 
-        <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-          <button className="flex w-full items-center justify-between rounded-full bg-black px-5 py-3 text-white sm:w-[240px]">
-            <span className="font-medium">Book a discovery call</span>
-            <span className="h-5 w-5 flex-shrink-0 rounded-full bg-white"></span>
-          </button>
-          <button className="flex w-full items-center justify-between rounded-full bg-black px-5 py-3 text-white sm:w-[240px]">
-            <span className="font-medium">Test Your Samples</span>
-            <span className="h-5 w-5 flex-shrink-0 rounded-full bg-white"></span>
-          </button>
-        </div>
-      </div>
-    </div>
+        <Text color="whiteAlpha.900" maxW={{ base: "full", md: "60%" }} mb={{ base: 4, md: 6 }}>
+          Your laboratory instruments should serve you, not the other way around. We&apos;re happy to help you.
+        </Text>
+
+        <Stack direction={{ base: "column", sm: "row" }} spacing={{ base: 3, sm: 4 }} mt={2}>
+          <Button
+            bg="black"
+            color="white"
+            rounded="full"
+            px={6}
+            py={4}
+            _hover={{ bg: "gray.800" }}
+            minW={{ sm: "240px" }}
+            justifyContent="space-between"
+            as="a"
+            href="https://github.com/ritesh-2008"
+            target="_blank"
+          >
+            <Box as="span" fontWeight="medium">
+              Github
+            </Box>
+            <Box ml={3} w="6" h="6" borderRadius="full" bg="white" />
+          </Button>
+
+          <Button
+            bg="black"
+            color="white"
+            rounded="full"
+            px={6}
+            py={4}
+            _hover={{ bg: "gray.800" }}
+            minW={{ sm: "240px" }}
+            justifyContent="space-between"
+            as="a"
+            href="https://x.com/RVanivdekar"
+            target="_blank"
+          >
+            <Box as="span" fontWeight="medium">
+              Twitter(x)
+            </Box>
+            <Box ml={3} w="6" h="6" borderRadius="full" bg="white" />
+          </Button>
+              <Button
+            bg="black"
+            color="white"
+            rounded="full"
+            px={6}
+            py={4}
+            _hover={{ bg: "gray.800" }}
+            minW={{ sm: "240px" }}
+            justifyContent="space-between"
+            as="a"
+            href="https://www.linkedin.com/in/ritesh-vanivdekar-364796336/"
+            target="_blank"
+          >
+            <Box as="span" fontWeight="medium">
+              LinkedIn
+            </Box>
+            <Box ml={3} w="6" h="6" borderRadius="full" bg="white" />
+          </Button>
+        </Stack>
+      </Flex>
+    </Box>
   );
 }

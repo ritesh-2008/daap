@@ -180,9 +180,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👤 Author
 
-**Your Name**
-- GitHub: [@your-github-username](https://github.com/your-github-username)
-- Twitter: [@your-twitter-handle](https://twitter.com/your-twitter-handle)
+*Ritesh**
+- GitHub: [ritesh](https://github.com/ritesh-2008)
+- Twitter: [RVanivdekar](https://twitter.com/RVanivdekar)
 
 ## 🙏 Acknowledgments
 

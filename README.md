@@ -29,22 +29,29 @@ A modern, blockchain-powered ticket booking system built with Solidity smart con
 ```
 solidity/
 ├── dapp1/
-│   ├── frontend/           # React application
+│   ├── frontend/ 
+|   |   ├──public/
+|   |   |    ├──golden-ticket.png
+|   |   |    ├──gradient.png
 │   │   ├── src/
-│   │   │   ├── component/  # UI components
-│   │   │   │   ├── navbar.jsx
-│   │   │   │   ├── buyticket.jsx
-│   │   │   │   ├── stats.jsx
-│   │   │   │   ├── refund.jsx
-│   │   │   │   ├── admin.jsx
-│   │   │   │   └── footer.jsx
-│   │   │   ├── interface/  # Web3 integration
-│   │   │   │   └── web3.js
-│   │   │   └── App.jsx
-│   │   └── public/         # Static assets
-│   └── contracts/          # Smart contracts
-├── first.sol              # Main ticket contract
-└── README.md
+│   │       ├── component/  # UI components
+│   │       │   ├── navbar.jsx
+│   │       │   ├── buyticket.jsx
+│   │       │   ├── stats.jsx
+│   │       │   ├── refund.jsx
+│   │       │   ├── admin.jsx
+│   │       │   └── footer.jsx
+│   │       ├── interface/  # Web3 integration
+│   │       │   └── web3.js
+│   │       ├── App.jsx
+|   |       ├── index.jsx
+│   │            # Static assets
+│   ├── contracts/ 
+|   |         ├── event.sol         # Smart contracts
+|   ├──scripts/
+|         ├── deploy-counter.ts           
+├── README.md
+├── requirement.md
 ```
 
 ## 🚀 Quick Start

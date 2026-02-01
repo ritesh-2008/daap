@@ -56,7 +56,7 @@ export default function Stats() {
   }, []);
 
   return (
-    <Box maxW="720px" mx="auto" mt={6} bottomMargin={4} px={4}>
+    <Box maxW="720px" mx="auto" mt={6} mb={4} px={4}>
       <HStack justify="space-between" mb={4}>
         <Heading size="md"color={"blue"} >Event Stats</Heading>
         <Button

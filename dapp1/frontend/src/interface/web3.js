@@ -1,7 +1,7 @@
 import Web3 from "web3";
-import abi from "./event.json";
+import eventJson from "./event.json";
 
-
+const abi = eventJson.abi;
 const CONTRACT_ADDRESS =
   "0xbE012904eE07ee7d7f48d57fc504E08A98E5Eafa";
 
@@ -10,9 +10,8 @@ export let EventContract;
 export let userAccount;
 
 //  Ensure app is initialized
-export default async function init() {
-  if (EventContract) return;
-  
+export async function init() {
+  if (EventContract) return EventContract;
 
   if (!window.ethereum) {
     throw new Error("MetaMask not detected");
@@ -20,54 +19,38 @@ export default async function init() {
 
   web3 = new Web3(window.ethereum);
 
-  const accounts = await window.ethereum.request({
+  const [account] = await window.ethereum.request({
     method: "eth_requestAccounts",
   });
 
-  userAccount = accounts[0];
+  userAccount = account;
 
-  // network check (Sepolia = 11155111)
   const chainId = await window.ethereum.request({
     method: "eth_chainId",
   });
-   const sepoliaChainId = '0xaa36a7'; 
- 
-  console.log("Current chainId:", chainId);
-  console.log("Expected:", sepoliaChainId);
 
-  if (chainId.toLowerCase() !== sepoliaChainId.toLowerCase()) {
-    initialized = false;
-    throw new Error("Please switch to Sepolia network");
+  const sepoliaChainId = "0xaa36a7";
+
+  if (chainId !== sepoliaChainId) {
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: sepoliaChainId }],
+    });
+    return null; // 👈 IMPORTANT
   }
- 
-   try {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: sepoliaChainId }],
-      });
-      
-      // Reload after successful switch
-      window.location.reload();
-    } catch (switchError) {
-      throw new Error(`Wrong network. Please switch to Sepolia. Current: ${chainId}`);
-    }
 
-
-window.ethereum.on("chainChanged", () => {
-  window.location.reload();
-});
-
-  EventContract = new web3.eth.Contract(
-    abi,
-    CONTRACT_ADDRESS
-  );
+  EventContract = new web3.eth.Contract(abi, CONTRACT_ADDRESS);
+  return EventContract;
 }
+
+
 
 // 🎟️ Purchase ticket
 export async function purchaseTicket(name, email, phone) {
-  await init();
+  const contract = await init();
+  if (!contract) return null; // 👈 IMPORTANT
 
-  return EventContract.methods
+  return contract.methods
     .payforticket(name, email, phone)
     .send({
       from: userAccount,
@@ -77,9 +60,10 @@ export async function purchaseTicket(name, email, phone) {
 
 // 💎 Buy VIP seat
 export async function buyVipSeat(name, email, phone) {
-  await init();
+  const contract = await init();
+  if (!contract) return null; // 👈 IMPORTANT
 
-  return EventContract.methods
+  return contract.methods
     .Buyvipseats(name, email, phone)
     .send({
       from: userAccount,
@@ -89,57 +73,66 @@ export async function buyVipSeat(name, email, phone) {
 
 // 🔁 Refund normal ticket
 export async function refundTicket() {
-  await init();
+ const contract = await init();
 
-  return EventContract.methods
+ if (!contract) return null; // 👈 IMPORTANT
+  return contract.methods
     .refund()
     .send({ from: userAccount });
 }
 
 // 🔁 Refund VIP ticket (if same logic)
 export async function refundVipTicket() {
-  await init();
+  const contract = await init();
 
-  return EventContract.methods
+  if (!contract) return null; // 👈 IMPORTANT
+  return contract.methods
     .refundforvip()
     .send({ from: userAccount });
 }
 // checkticket
 export async function checkticket(){ 
-    await init();
-    return EventContract.methods.checkticket().call({ from: userAccount });
+    const contract = await init();
+    if (!contract) return null; // 👈 IMPORTANT
+    return contract.methods.checkticket().call({ from: userAccount });
 }
 // checkvipticket
 export async function checkvipticket(){
-    await init();
-    return EventContract.methods.checkvipticket().call({ from: userAccount });
+    const contract = await init();
+    if (!contract) return null; // 👈 IMPORTANT
+    return contract.methods.checkvipticket().call({ from: userAccount });
 }
 // soldticket
 export async function soldticket(){
-    await init();
-    return EventContract.methods.soldticket().call()
+    const contract = await init();
+    if (!contract) return null; // 👈 IMPORTANT
+    return contract.methods.soldticket().call()
 }
 // soldvipticket
 export async function soldvipticket(){
-    await init();
-    return EventContract.methods.soldvipticket().call()
+    const contract = await init();
+    if (!contract) return null; // 👈 IMPORTANT
+    return contract.methods.soldvipticket().call()
 }
 // dashboard
 // setticketprize
 export async function setticketprize(ticketprize,vipprize){
-    await init();
-    return EventContract.methods.setticketprize(ticketprize,vipprize).send({ from: userAccount });
+    const contract = await init();
+    if (!contract) return null; // 👈 IMPORTANT
+    return contract.methods.setticketprize(ticketprize,vipprize).send({ from: userAccount });
 }
 // seteventdate
 export async function seteventdate(eventdate){
-    await init();
-    return EventContract.methods.seteventdate(eventdate).send({ from: userAccount });
+    const contract = await init();
+    if (!contract) return null; // 👈 IMPORTANT
+    return contract.methods.seteventdate(eventdate).send({ from: userAccount });
 }
 
 // withdrawamount
 export async function withdrawamount(){
-    await init();
-    return EventContract.methods.withdraw().send({ from: userAccount });
+    const contract = await init();
+    if (!contract) return null; // 👈 IMPORTANT
+    return contract.methods.withdraw().send({ from: userAccount });
 }
 // dashboard ends here
 
@@ -152,12 +145,14 @@ window.ethereum?.on("accountsChanged", (accounts) => {
 
 // get currnet accounts
 export async function getCurrentAccount() {
-  await init();
+  const contract = await init();
+  if (!contract) return null; // 👈 IMPORTANT
   return userAccount;
 }
 
 // get owneracc
 export async function getOwnerAccount() {
-  await init();
-  return EventContract.methods.owner().call();
+  const contract = await init();
+  if (!contract) return null; // 👈 IMPORTANT
+  return contract.methods.owner().call();
 }

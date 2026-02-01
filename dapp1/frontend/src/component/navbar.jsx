@@ -1,5 +1,5 @@
 import { useState } from "react";
-import init, { EventContract, userAccount } from "../interface/web3.js";
+import {init, EventContract, userAccount } from "../interface/web3.js";
 import {
   Box,
   Heading,
@@ -13,7 +13,7 @@ import {
 
 
 export default function Navbar() {
-  const [errorMessage, setErrorMessage] = useState("");
+ 
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 

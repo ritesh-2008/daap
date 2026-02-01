@@ -55,7 +55,7 @@ export default function CTA2() {
         </Heading>
 
         <Text color="whiteAlpha.900" maxW={{ base: "full", md: "60%" }} mb={{ base: 4, md: 6 }}>
-          Your laboratory instruments should serve you, not the other way around. We&apos;re happy to help you.
+          Connect with me for collaboration, networking, or any inquiries. I'm happy to help you.
         </Text>
 
         <Stack direction={{ base: "column", sm: "row" }} spacing={{ base: 3, sm: 4 }} mt={2}>

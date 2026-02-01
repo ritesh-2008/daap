@@ -6,7 +6,7 @@ import Buyticket from "./component/buyticket.jsx";
 import Navbar from "./component/navbar.jsx";
 import CTA1 from "./component/footer.jsx";
 import { getCurrentAccount, getOwnerAccount } from "./interface/web3.js";
-import { Box, Container, VStack, Grid } from "@chakra-ui/react";
+import { Box, Container, VStack } from "@chakra-ui/react";
 import Spline from "@splinetool/react-spline";
 
 export default function App() {
@@ -16,7 +16,8 @@ export default function App() {
     async function checkowner() {
       try {
         const owner = await getOwnerAccount();
-        const useracc = getCurrentAccount();
+        const useracc =  await getCurrentAccount();
+        if (!owner || !useracc) return;
 
         setowner(owner.toLowerCase() === useracc.toLowerCase());
       } catch (err) {
@@ -44,16 +45,29 @@ export default function App() {
         <VStack spacing={8} align="stretch">
           <Navbar />
 
-                      
-                
-            
-
-            {/* right: Buyticket content — kept above Spline */}
-            <Box position="relative" >
-              <Buyticket />
-              <Spline left={10000} display="block" zIndex={-1} scene="https://prod.spline.design/iuqkAeos0DEDPTGg/scene.splinecode" />
+          {/* Robot behind form section */}
+          <Box position="relative" minH="500px">
+            {/* Spline robot positioned absolutely behind */}
+            <Box
+              position="absolute"
+              left="-90px"
+              top="50%"
+              transform="translateY(-50%)"
+              w="700px"
+              h="600px"
+              zIndex={0}
+              opacity={0.9}
+              pointerEvents="none"
+              display={{ base: "none", md: "block" }}
+            >
+              <Spline scene="https://prod.spline.design/iuqkAeos0DEDPTGg/scene.splinecode" />
             </Box>
-         
+
+            {/* Buyticket form on top */}
+            <Box position="relative" zIndex={1} display="flex" justifyContent="center"   left={{ base: 0, md: "110px" }} top={{ base: 0, md: "60px" }}>
+              <Buyticket />
+            </Box>
+          </Box>
 
           <Box>
             <Stats />

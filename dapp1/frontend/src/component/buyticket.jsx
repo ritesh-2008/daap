@@ -117,7 +117,7 @@ export default function Buyticket() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           disabled={loading}
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+          style={{ width: "100%", color: "black", padding: "8px", marginBottom: "10px" }}
         />
         
         <input
@@ -126,7 +126,7 @@ export default function Buyticket() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={loading}
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+          style={{ width: "100%", color: "black", padding: "8px", marginBottom: "10px" }}
         />
         
         <input
@@ -135,7 +135,7 @@ export default function Buyticket() {
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           disabled={loading}
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+          style={{ width: "100%", color: "black", padding: "8px", marginBottom: "10px" }}
         />
       </Box>
 

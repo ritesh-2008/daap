@@ -174,7 +174,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links
 
-- **Demo**: [Live Demo](your-demo-link)
+- **Demo**: [Live Demo](https://lesbookit.netlify.app/)
 - **Contract**: [View on Etherscan](https://sepolia.etherscan.io/address/0xe3c12d3896140023D370c7D60A3b0aB283b17151)
 - **Documentation**: [Full Docs](docs-link)
 

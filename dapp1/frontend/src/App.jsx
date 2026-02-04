@@ -39,35 +39,43 @@ export default function App() {
       bgRepeat="no-repeat"
       py={{ base: 6, md: 10 }}
       position="relative"
-      overflow="hidden"
+      
     >
-      <Container maxW="6xl">
+      <Container maxW="6xl" px={{ base: 4, md: 6 }}>
         <VStack spacing={8} align="stretch">
           <Navbar />
 
-          {/* Robot behind form section */}
-          <Box position="relative" minH="500px">
-            {/* Spline robot positioned absolutely behind */}
-            <Box
-              position="absolute"
-              left="-90px"
-              top="50%"
-              transform="translateY(-50%)"
-              w="700px"
-              h="600px"
-              zIndex={0}
-              opacity={0.9}
-              pointerEvents="none"
-              display={{ base: "none", md: "block" }}
-            >
-              <Spline scene="https://prod.spline.design/iuqkAeos0DEDPTGg/scene.splinecode" />
-            </Box>
+       <Box position="relative">
+  <Box
+    display="flex"
+    flexDirection={{ base: "column", md: "row" }}
+    alignItems="center"
+    justifyContent="center"
+    gap={{ base: 6, md: 10 }}
+  >
+    {/* Spline Robot */}
+<Box
+  w={{ base: "100%", md: "500px" }}
+  h={{ base: "300px", md: "500px" }}
+  position="relative"
+>
+  <Spline
+    style={{ width: "100%", height: "100%" }}
+    scene="https://prod.spline.design/iuqkAeos0DEDPTGg/scene.splinecode" />
 
-            {/* Buyticket form on top */}
-            <Box position="relative" zIndex={1} display="flex" justifyContent="center"   left={{ base: 0, md: "110px" }} top={{ base: 0, md: "60px" }}>
-              <Buyticket />
-            </Box>
-          </Box>
+         
+</Box>
+
+
+
+
+    {/* Buyticket form */}
+    <Box w={{ base: "100%", md: "420px" }}>
+      <Buyticket />
+    </Box>
+  </Box>
+</Box>
+
 
           <Box>
             <Stats />

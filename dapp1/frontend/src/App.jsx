@@ -6,7 +6,31 @@ import Buyticket from "./component/buyticket.jsx";
 import Navbar from "./component/navbar.jsx";
 import CTA1 from "./component/footer.jsx";
 import { getCurrentAccount, getOwnerAccount } from "./interface/web3.js";
-import { Box, Container, VStack, Divider } from "@chakra-ui/react";
+import { Box, Container, VStack, Text, HStack } from "@chakra-ui/react";
+
+// ── Reusable section wrapper ──────────────────────────────────────────────────
+const Section = ({ children, gradient, glow, mb = 6 }) => (
+  <Box
+    as="section"
+    position="relative"
+    borderRadius={{ base: "16px", md: "20px", lg: "24px" }}
+    p="1px"
+    background={gradient}
+    boxShadow={glow}
+    mb={mb}
+    w="100%"
+  >
+    <Box
+      borderRadius={{ base: "15px", md: "19px", lg: "23px" }}
+      bg="rgba(8,6,18,0.94)"
+      backdropFilter="blur(20px)"
+      p={{ base: 4, sm: 5, md: 6, lg: 8 }}
+      w="100%"
+    >
+      {children}
+    </Box>
+  </Box>
+);
 
 export default function App() {
   const [isowner, setowner] = useState(false);
@@ -26,234 +50,280 @@ export default function App() {
   }, []);
 
   return (
-    <Box minH="100vh" position="relative" overflow="hidden" bg="#050508">
-
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(40px) rotate(3deg); }
-        }
-        @keyframes pulse-glow {
-          0%, 100% { opacity: 0.4; }
-          50% { opacity: 0.8; }
-        }
-        @keyframes scanline {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(100vh); }
-        }
-        @keyframes shimmer {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
-
-        /* Sexy scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a12; }
-        ::-webkit-scrollbar-thumb {
-          background: linear-gradient(180deg, #a855f7, #3b82f6);
-          border-radius: 3px;
-        }
-      `}</style>
-
-      {/* ── Deep space base ── */}
+    <>
+      {/* ── SEO / meta via plain HTML (Vite injects into index.html) ── */}
       <Box
-        position="absolute" inset={0} zIndex={-4}
-        bg="radial-gradient(ellipse at 20% 20%, #0d0720 0%, #050508 50%, #020410 100%)"
-      />
+        as="main"
+        minH="100vh"
+        position="relative"
+        overflow="hidden"
+        bg="#050508"
+        // semantic landmark for screen readers
+        aria-label="Bookit — Web3 Event Ticketing"
+      >
 
-      {/* ── Purple orb top-left ── */}
-      <Box
-        position="absolute"
-        w="700px" h="700px"
-        top="-300px" left="-250px"
-        zIndex={-3}
-        borderRadius="full"
-        bg="radial-gradient(circle, rgba(168,85,247,0.25) 0%, transparent 70%)"
-        filter="blur(80px)"
-        animation="float 8s ease-in-out infinite"
-        style={{ animationName: "pulse-glow" }}
-      />
+        <style>{`
+          /* ── Reset & base ── */
+          *, *::before, *::after { box-sizing: border-box; }
 
-      {/* ── Blue orb bottom-right ── */}
-      <Box
-        position="absolute"
-        w="600px" h="600px"
-        bottom="-200px" right="-200px"
-        zIndex={-3}
-        borderRadius="full"
-        bg="radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)"
-        filter="blur(70px)"
-        animation="float 11s ease-in-out infinite reverse"
-      />
+          /* ── Responsive font scale ── */
+          html { font-size: clamp(14px, 1.5vw, 16px); }
 
-      {/* ── Pink orb center ── */}
-      <Box
-        position="absolute"
-        w="400px" h="400px"
-        top="40%" left="50%"
-        transform="translate(-50%, -50%)"
-        zIndex={-3}
-        borderRadius="full"
-        bg="radial-gradient(circle, rgba(236,72,153,0.1) 0%, transparent 70%)"
-        filter="blur(60px)"
-        animation="float 13s ease-in-out infinite"
-      />
+          /* ── Animations ── */
+          @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(30px); }
+          }
+          @keyframes pulse-glow {
+            0%, 100% { opacity: 0.35; }
+            50%       { opacity: 0.75; }
+          }
+          @keyframes shimmer {
+            0%   { background-position: -200% center; }
+            100% { background-position:  200% center; }
+          }
+          @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0);    }
+          }
 
-      {/* ── Fine grid ── */}
-      <Box
-        position="absolute" inset={0} zIndex={-2}
-        backgroundImage={`
-          linear-gradient(rgba(168,85,247,0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(168,85,247,0.05) 1px, transparent 1px)
-        `}
-        backgroundSize="32px 32px"
-        pointerEvents="none"
-      />
+          /* ── Scrollbar ── */
+          ::-webkit-scrollbar       { width: 5px; }
+          ::-webkit-scrollbar-track { background: #08060f; }
+          ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #a855f7, #3b82f6);
+            border-radius: 4px;
+          }
 
-      {/* ── Dot grid overlay ── */}
-      <Box
-        position="absolute" inset={0} zIndex={-1}
-        backgroundImage="radial-gradient(rgba(168,85,247,0.15) 1px, transparent 1px)"
-        backgroundSize="64px 64px"
-        pointerEvents="none"
-      />
+          /* ── Smooth scroll ── */
+          html { scroll-behavior: smooth; }
 
-      {/* ── Top shimmer bar ── */}
-      <Box
-        position="absolute" top={0} left={0} right={0}
-        height="1px" zIndex={10}
-        background="linear-gradient(90deg, transparent 0%, rgba(168,85,247,0.8) 30%, rgba(236,72,153,0.8) 50%, rgba(59,130,246,0.8) 70%, transparent 100%)"
-        backgroundSize="200% auto"
-        animation="shimmer 4s linear infinite"
-      />
+          /* ── Focus ring for a11y ── */
+          :focus-visible {
+            outline: 2px solid rgba(168,85,247,0.7);
+            outline-offset: 3px;
+            border-radius: 6px;
+          }
 
-      {/* ── Bottom shimmer bar ── */}
-      <Box
-        position="fixed" bottom={0} left={0} right={0}
-        height="1px" zIndex={10}
-        background="linear-gradient(90deg, transparent 0%, rgba(59,130,246,0.6) 40%, rgba(168,85,247,0.6) 60%, transparent 100%)"
-      />
+          /* ── Prevent horizontal overflow on mobile ── */
+          body { overflow-x: hidden; }
 
-      {/* ── Content ── */}
-      <Container maxW="6xl" px={{ base: 4, md: 8 }} position="relative" zIndex={1}>
-        <VStack spacing={0} align="stretch" py={{ base: 6, md: 12 }}>
+          /* ── Section fade-in ── */
+          .fade-section {
+            animation: fadeUp 0.5s ease-out both;
+          }
+          .fade-section:nth-child(2)  { animation-delay: 0.05s; }
+          .fade-section:nth-child(3)  { animation-delay: 0.10s; }
+          .fade-section:nth-child(4)  { animation-delay: 0.15s; }
+          .fade-section:nth-child(5)  { animation-delay: 0.20s; }
+          .fade-section:nth-child(6)  { animation-delay: 0.25s; }
+        `}</style>
 
-          <Navbar />
+        {/* ── Background layers ── */}
+        {/* Deep space radial */}
+        <Box position="fixed" inset={0} zIndex={-4}
+          bg="radial-gradient(ellipse at 20% 20%, #0d0720 0%, #050508 55%, #020410 100%)"
+          pointerEvents="none" aria-hidden />
 
-          <Box h="2px" my={8}
-            background="linear-gradient(90deg, transparent, rgba(168,85,247,0.4), rgba(59,130,246,0.4), transparent)"
-          />
+        {/* Purple orb — hidden on small screens for perf */}
+        <Box display={{ base: "none", md: "block" }}
+          position="fixed" w="600px" h="600px" top="-250px" left="-200px"
+          zIndex={-3} borderRadius="full"
+          bg="radial-gradient(circle, rgba(168,85,247,0.22) 0%, transparent 70%)"
+          filter="blur(80px)"
+          style={{ animation: "pulse-glow 8s ease-in-out infinite" }}
+          pointerEvents="none" aria-hidden />
 
-          {/* Buy Ticket — hero section */}
-          <Box
-            position="relative"
-            borderRadius="24px"
-            p="1px"
-            background="linear-gradient(135deg, rgba(168,85,247,0.5), rgba(59,130,246,0.5), rgba(236,72,153,0.3))"
-            boxShadow="0 0 60px rgba(168,85,247,0.15), 0 0 120px rgba(59,130,246,0.1)"
-            mb={8}
+        {/* Blue orb */}
+        <Box display={{ base: "none", md: "block" }}
+          position="fixed" w="500px" h="500px" bottom="-180px" right="-160px"
+          zIndex={-3} borderRadius="full"
+          bg="radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)"
+          filter="blur(70px)"
+          style={{ animation: "float 11s ease-in-out infinite reverse" }}
+          pointerEvents="none" aria-hidden />
+
+        {/* Pink orb */}
+        <Box display={{ base: "none", lg: "block" }}
+          position="fixed" w="380px" h="380px" top="40%" left="50%"
+          transform="translate(-50%, -50%)"
+          zIndex={-3} borderRadius="full"
+          bg="radial-gradient(circle, rgba(236,72,153,0.08) 0%, transparent 70%)"
+          filter="blur(60px)"
+          style={{ animation: "float 13s ease-in-out infinite" }}
+          pointerEvents="none" aria-hidden />
+
+        {/* Fine grid */}
+        <Box position="fixed" inset={0} zIndex={-2}
+          backgroundImage={`
+            linear-gradient(rgba(168,85,247,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(168,85,247,0.04) 1px, transparent 1px)
+          `}
+          backgroundSize={{ base: "24px 24px", md: "32px 32px" }}
+          pointerEvents="none" aria-hidden />
+
+        {/* Top shimmer */}
+        <Box position="fixed" top={0} left={0} right={0} h="1px" zIndex={20}
+          background="linear-gradient(90deg, transparent 0%, rgba(168,85,247,0.8) 30%, rgba(236,72,153,0.7) 50%, rgba(59,130,246,0.8) 70%, transparent 100%)"
+          backgroundSize="200% auto"
+          style={{ animation: "shimmer 4s linear infinite" }}
+          pointerEvents="none" aria-hidden />
+
+        {/* Bottom shimmer */}
+        <Box position="fixed" bottom={0} left={0} right={0} h="1px" zIndex={20}
+          background="linear-gradient(90deg, transparent, rgba(59,130,246,0.5), rgba(168,85,247,0.5), transparent)"
+          pointerEvents="none" aria-hidden />
+
+        {/* ── Page content ── */}
+        <Container
+          maxW={{ base: "100%", sm: "540px", md: "768px", lg: "1024px", xl: "1200px" }}
+          px={{ base: 3, sm: 4, md: 6, lg: 8 }}
+          position="relative"
+          zIndex={1}
+        >
+          <VStack
+            spacing={0}
+            align="stretch"
+            pt={{ base: 4, md: 6, lg: 10 }}
+            pb={{ base: 10, md: 14 }}
           >
-            <Box
-              borderRadius="24px"
-              bg="rgba(10,8,20,0.95)"
-              backdropFilter="blur(20px)"
-              p={{ base: 6, md: 8 }}
-            >
-              <Buyticket />
+
+            {/* ── Navbar ── */}
+            <Box as="header" className="fade-section" mb={{ base: 5, md: 6, lg: 8 }}>
+              <Navbar />
             </Box>
-          </Box>
 
-          {/* Stats */}
-          <Box
-            position="relative"
-            borderRadius="20px"
-            p="1px"
-            background="linear-gradient(135deg, rgba(59,130,246,0.3), rgba(168,85,247,0.3))"
-            boxShadow="0 0 40px rgba(59,130,246,0.08)"
-            mb={8}
-          >
-            <Box
-              borderRadius="20px"
-              bg="rgba(8,10,20,0.92)"
-              backdropFilter="blur(16px)"
-              p={{ base: 5, md: 7 }}
-            >
-              <Stats />
-            </Box>
-          </Box>
+            {/* ── Divider ── */}
+            <Box h="1px" mb={{ base: 5, md: 7 }} aria-hidden
+              background="linear-gradient(90deg, transparent, rgba(168,85,247,0.35), rgba(59,130,246,0.35), transparent)" />
 
-          {/* Refund */}
-          <Box
-            position="relative"
-            borderRadius="20px"
-            p="1px"
-            background="linear-gradient(135deg, rgba(236,72,153,0.3), rgba(168,85,247,0.3))"
-            boxShadow="0 0 40px rgba(236,72,153,0.08)"
-            mb={8}
-          >
-            <Box
-              borderRadius="20px"
-              bg="rgba(8,10,20,0.92)"
-              backdropFilter="blur(16px)"
-              p={{ base: 5, md: 7 }}
-            >
-              <Refund />
-            </Box>
-          </Box>
-
-          <CTA1 />
-
-          {/* Admin — only for owner */}
-          {isowner && (
-            <Box
-              position="relative"
-              borderRadius="20px"
-              p="1px"
-              mt={8}
-              background="linear-gradient(135deg, rgba(234,179,8,0.5), rgba(239,68,68,0.4))"
-              boxShadow="0 0 60px rgba(234,179,8,0.15)"
-            >
-              <Box
-                borderRadius="20px"
-                bg="rgba(12,8,4,0.95)"
-                backdropFilter="blur(20px)"
-                p={{ base: 5, md: 7 }}
-              >
-                {/* Admin badge */}
-                <Box
-                  display="inline-flex"
-                  alignItems="center"
-                  gap={2}
-                  mb={4}
-                  px={3} py={1}
-                  borderRadius="full"
-                  bg="rgba(234,179,8,0.1)"
-                  border="1px solid rgba(234,179,8,0.3)"
-                  fontSize="12px"
-                  fontWeight="600"
-                  color="yellow.400"
+            {/* ── Hero label ── */}
+            <Box className="fade-section" mb={{ base: 2, md: 3 }}>
+              <HStack spacing={2} justify="center">
+                <Box w="32px" h="1px" bg="linear-gradient(90deg, transparent, rgba(168,85,247,0.6))" />
+                <Text
+                  fontSize={{ base: "9px", md: "10px" }}
+                  fontWeight="700"
                   letterSpacing="2px"
+                  color="rgba(168,85,247,0.6)"
+                  textTransform="uppercase"
+                  textAlign="center"
                 >
-                  ⚡ OWNER PANEL
+                  Web3 Event Ticketing
+                </Text>
+                <Box w="32px" h="1px" bg="linear-gradient(90deg, rgba(168,85,247,0.6), transparent)" />
+              </HStack>
+            </Box>
 
-                </Box>
-                {isowner && (
-                  <Box>
+            {/* ── Buy Ticket ── */}
+            <Box className="fade-section" id="buy-ticket" aria-label="Buy Ticket">
+              <Section
+                gradient="linear-gradient(135deg, rgba(168,85,247,0.45), rgba(59,130,246,0.45), rgba(236,72,153,0.25))"
+                glow="0 0 50px rgba(168,85,247,0.12), 0 0 100px rgba(59,130,246,0.08)"
+                mb={{ base: 4, md: 6 }}
+              >
+                <Buyticket />
+              </Section>
+            </Box>
+
+            {/* ── Stats ── */}
+            <Box className="fade-section" id="stats" aria-label="Event Statistics">
+              <Section
+                gradient="linear-gradient(135deg, rgba(59,130,246,0.3), rgba(168,85,247,0.25))"
+                glow="0 0 40px rgba(59,130,246,0.07)"
+                mb={{ base: 4, md: 6 }}
+              >
+                <Stats />
+              </Section>
+            </Box>
+
+            {/* ── Refund ── */}
+            <Box className="fade-section" id="refund" aria-label="Refund Ticket">
+              <Section
+                gradient="linear-gradient(135deg, rgba(236,72,153,0.28), rgba(168,85,247,0.25))"
+                glow="0 0 40px rgba(236,72,153,0.07)"
+                mb={{ base: 4, md: 6 }}
+              >
+                <Refund />
+              </Section>
+            </Box>
+
+            {/* ── CTA / Footer ── */}
+            <Box className="fade-section" id="contact" aria-label="Contact and Social">
+              <CTA1 />
+            </Box>
+
+            {/* ── Admin panel ── */}
+            {isowner && (
+              <Box
+                className="fade-section"
+                id="admin"
+                aria-label="Admin Panel"
+                mt={{ base: 4, md: 6 }}
+              >
+                <Box
+                  position="relative"
+                  borderRadius={{ base: "16px", md: "20px" }}
+                  p="1px"
+                  background="linear-gradient(135deg, rgba(234,179,8,0.5), rgba(239,68,68,0.4))"
+                  boxShadow="0 0 60px rgba(234,179,8,0.12)"
+                >
+                  <Box
+                    borderRadius={{ base: "15px", md: "19px" }}
+                    bg="rgba(10,6,2,0.96)"
+                    backdropFilter="blur(20px)"
+                    p={{ base: 4, sm: 5, md: 6, lg: 8 }}
+                  >
+                    {/* Admin badge */}
+                    <Box
+                      display="inline-flex"
+                      alignItems="center"
+                      gap={2}
+                      mb={{ base: 4, md: 5 }}
+                      px={3} py="6px"
+                      borderRadius="full"
+                      bg="rgba(234,179,8,0.08)"
+                      border="1px solid rgba(234,179,8,0.25)"
+                    >
+                      <Box
+                        w="6px" h="6px" borderRadius="full" bg="#eab308"
+                        boxShadow="0 0 8px rgba(234,179,8,0.8)"
+                      />
+                      <Text
+                        fontSize={{ base: "10px", md: "11px" }}
+                        fontWeight="700"
+                        color="rgba(234,179,8,0.85)"
+                        letterSpacing="2px"
+                        textTransform="uppercase"
+                      >
+                        Owner Panel
+                      </Text>
+                    </Box>
+
                     <Admin />
                   </Box>
-                )}
-
+                </Box>
               </Box>
+            )}
 
-            </Box>
-          )}
+            {/* ── Bottom divider ── */}
+            <Box h="1px" mt={{ base: 8, md: 12 }} aria-hidden
+              background="linear-gradient(90deg, transparent, rgba(59,130,246,0.25), rgba(168,85,247,0.25), transparent)" />
 
-          <Box h="2px" my={10}
-            background="linear-gradient(90deg, transparent, rgba(59,130,246,0.3), rgba(168,85,247,0.3), transparent)"
-          />
+            {/* ── Footer credit ── */}
+            <Text
+              textAlign="center"
+              fontSize={{ base: "10px", md: "11px" }}
+              color="rgba(255,255,255,0.18)"
+              mt={4}
+              letterSpacing="0.5px"
+            >
+              ⚡ Bookit — Powered by Ethereum smart contracts
+            </Text>
 
-        </VStack>
-      </Container>
-    </Box>
+          </VStack>
+        </Container>
+      </Box>
+    </>
   );
 }
